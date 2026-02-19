@@ -3,367 +3,1046 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para o Meu Minduim</title>
+    <title>Buldogs do Jurunas - Site Oficial</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;600;700&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #1a1a2e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
+        /* =============================================
+           VARIÁVEIS E RESET
+        ============================================= */
+        :root {
+            --azul:    #001f4d;
+            --azul2:   #00307a;
+            --branco:  #f5f5f0;
+            --cinza:   #0d0d0d;
+            --acento:  #c8a84b; /* Dourado */
+            --texto:   #e0ddd5;
         }
 
-        .envelope-wrapper {
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: #0a0a0a;
+            color: var(--texto);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 400;
+            overflow-x: hidden;
+        }
+
+        ::selection { background: var(--acento); color: #000; }
+
+        /* =============================================
+           TOPBAR
+        ============================================= */
+        .topbar {
+            background: var(--cinza);
+            border-bottom: 1px solid rgba(200,168,75,0.2);
+            font-size: 0.8rem;
+            padding: 7px 0;
+            letter-spacing: 1px;
+            color: #888;
+        }
+        .topbar a { color: #888; text-decoration: none; transition: color 0.2s; }
+        .topbar a:hover { color: var(--acento); }
+
+        /* =============================================
+           NAVBAR
+        ============================================= */
+        .navbar-oficial {
+            background: rgba(0, 15, 40, 0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(200,168,75,0.25);
+            padding: 14px 0;
+            transition: padding 0.3s;
+        }
+        .navbar-oficial.scrolled { padding: 8px 0; }
+
+        .navbar-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.7rem;
+            letter-spacing: 3px;
+            color: var(--branco) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-escudo {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+        }
+        .nav-link-pub {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #bbb !important;
+            padding: 4px 16px !important;
+            transition: color 0.2s;
             position: relative;
-            cursor: pointer;
+        }
+        .nav-link-pub::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 16px; right: 16px;
+            height: 1px;
+            background: var(--acento);
+            transform: scaleX(0);
             transition: transform 0.3s;
         }
+        .nav-link-pub:hover { color: var(--branco) !important; }
+        .nav-link-pub:hover::after { transform: scaleX(1); }
 
-        .envelope-wrapper:hover {
-            transform: scale(1.05);
+        .btn-admin-trigger {
+            background: transparent;
+            border: 1px solid rgba(200,168,75,0.4);
+            color: var(--acento);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 6px 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-admin-trigger:hover {
+            background: rgba(200,168,75,0.1);
+            border-color: var(--acento);
+            color: var(--acento);
         }
 
-        .envelope {
-            width: 300px;
-            height: 200px;
-            background: #ff4d4d;
+        /* =============================================
+           HERO
+        ============================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            border-radius: 5px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            z-index: 10;
+            overflow: hidden;
+            background: #000;
         }
 
-        .flap {
+        /* Fundo animado */
+        .hero-bg {
             position: absolute;
-            width: 0;
-            height: 0;
-            z-index: 20;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,31,77,0.8) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 20%, rgba(200,168,75,0.05) 0%, transparent 60%);
+            z-index: 0;
         }
-
-        .flap.top {
-            top: 0;
-            left: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #ff6666;
-            transform-origin: top;
-            transition: transform 0.6s ease-in-out, z-index 0.2s;
-        }
-
-        .flap.right {
-            top: 0;
-            right: 0;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-right: 150px solid #e60000;
-        }
-
-        .flap.bottom {
-            bottom: 0;
-            left: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 110px solid #ff1a1a;
-            z-index: 20;
-        }
-
-        .flap.left {
-            top: 0;
-            left: 0;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-left: 150px solid #e60000;
-        }
-
-        /* Configuração da Carta */
-        .letter {
+        .hero-bg::before {
+            content: '';
             position: absolute;
-            bottom: 0;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px),
+                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px);
+            background-size: 60px 60px;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 20px;
+            animation: heroFade 1.2s ease both;
+        }
+
+        @keyframes heroFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-eyebrow {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--acento);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: heroFade 0.8s 0.3s ease both;
+        }
+
+        .hero-escudo {
+            width: 110px;
+            margin: 0 auto 28px;
+            filter: drop-shadow(0 0 30px rgba(200,168,75,0.3));
+            opacity: 0;
+            animation: heroFade 0.8s 0.5s ease both;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.9;
+            letter-spacing: 4px;
+            color: var(--branco);
+            text-shadow: 0 0 80px rgba(200,168,75,0.15);
+            opacity: 0;
+            animation: heroFade 0.8s 0.7s ease both;
+        }
+        .hero-title span { color: var(--acento); }
+
+        .hero-sub {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: #777;
+            margin-top: 20px;
+            opacity: 0;
+            animation: heroFade 0.8s 0.9s ease both;
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 1px;
+            background: var(--acento);
+            margin: 20px auto;
+            opacity: 0;
+            animation: heroFade 0.8s 1.1s ease both;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            width: 290px;
-            height: 180px;
-            background: white;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-            border-radius: 5px;
-            transition: all 0.8s ease-in-out;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .letter h1 {
-            font-size: 20px;
-            color: #d63031;
-            margin: 0 0 10px 0;
+            color: #444;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-weight: 800;
-            line-height: 1.2;
-            flex-shrink: 0;
-        }
-
-        .letter-content {
-            font-size: 14px;
-            color: #333;
-            margin-top: 5px;
-            line-height: 1.5;
-            text-align: justify;
-            width: 100%;
-        }
-
-        /* Área do Vídeo */
-        .video-area {
-            margin-top: 20px;
-            width: 100%;
-            display: none; /* Escondido inicialmente */
+            display: flex;
             flex-direction: column;
             align-items: center;
-            opacity: 0;
-            transition: opacity 1s ease;
-            padding-bottom: 20px;
+            gap: 8px;
+            animation: bobbing 2s ease-in-out infinite;
+        }
+        @keyframes bobbing {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(6px); }
         }
 
-        video {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            background-color: #000;
+        /* =============================================
+           SECÇÃO GERAL
+        ============================================= */
+        .secao {
+            padding: 80px 0;
         }
 
-        /* Botão de Play Personalizado */
-        .play-btn {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
+        .secao-titulo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            letter-spacing: 3px;
+            color: var(--branco);
+            margin-bottom: 4px;
+        }
+        .secao-titulo span { color: var(--acento); }
+        .secao-sub {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #555;
+            margin-bottom: 50px;
+        }
+
+        /* =============================================
+           FEED / CARDS
+        ============================================= */
+        .card-momento {
+            background: #111;
+            border: 1px solid #1e1e1e;
             cursor: pointer;
-            margin-top: 15px;
-            transition: background 0.3s;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .card-momento:hover {
+            border-color: rgba(200,168,75,0.4);
+            transform: translateY(-4px);
+        }
+
+        .card-thumb {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+            background: #0a0a0a;
+        }
+        .card-thumb img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+        .card-momento:hover .card-thumb img { transform: scale(1.06); }
+
+        .thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%);
+        }
+        .thumb-play {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 14px;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: rgba(255,255,255,0.75);
+            transition: color 0.2s, transform 0.2s;
         }
+        .card-momento:hover .thumb-play { color: var(--branco); transform: scale(1.1); }
 
-        .play-btn:hover {
-            background-color: #d63031;
-        }
-
-        /* Scroll da carta */
-        .letter::-webkit-scrollbar { width: 6px; }
-        .letter::-webkit-scrollbar-track { background: #f1f1f1; }
-        .letter::-webkit-scrollbar-thumb { background: #ff6666; border-radius: 10px; }
-
-        /* Estado Aberto */
-        .open .flap.top {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .open .letter {
-            bottom: 30px;
-            z-index: 25;
-            height: 520px; /* Aumentei para caber bem o vídeo */
-            max-height: 85vh;
-            overflow-y: auto;
-            justify-content: flex-start;
-        }
-
-        .click-hint {
+        .card-badge {
             position: absolute;
-            bottom: -40px;
+            top: 12px; right: 12px;
+            background: var(--acento);
+            color: #000;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+        }
+
+        .card-info {
+            padding: 18px 20px 16px;
+        }
+        .card-data {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+        }
+        .card-titulo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--branco);
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+        }
+
+        .card-actions {
+            display: none;
+            padding: 0 20px 16px;
+        }
+        .card-actions.visivel { display: block; }
+
+        /* =============================================
+           LIGHTBOX
+        ============================================= */
+        #lightboxModal .modal-content {
+            background: transparent;
+            border: none;
+        }
+        #lightboxModal .modal-body {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+        .lb-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            z-index: 1060;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 1rem;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .lb-close:hover { background: rgba(200,168,75,0.2); }
+
+        .lb-img {
+            max-width: 100%;
+            max-height: 88vh;
+            object-fit: contain;
+            border: 1px solid rgba(200,168,75,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+        }
+        .lb-video {
+            max-width: 100%;
+            max-height: 88vh;
+            width: 900px;
+            border: 1px solid rgba(200,168,75,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+        }
+        .lb-iframe {
             width: 100%;
+            max-width: 400px;
+            height: 80vh;
+            border: none;
+            border-radius: 6px;
+        }
+
+        /* =============================================
+           HISTÓRIA
+        ============================================= */
+        .historia-wrap {
+            background: #080808;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .historia-img {
+            width: 100%; height: 380px;
+            object-fit: cover;
+            filter: grayscale(60%) contrast(1.1);
+            border: 1px solid #1e1e1e;
+        }
+        .historia-texto {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #888;
+        }
+        .historia-texto strong { color: var(--acento); font-weight: 500; }
+
+        /* =============================================
+           RODAPÉ
+        ============================================= */
+        .rodape {
+            background: #000;
+            border-top: 1px solid rgba(200,168,75,0.15);
+            padding: 40px 0 24px;
+            color: #3a3a3a;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .rodape-marca {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        /* =============================================
+           PAINEL ADMIN (OFFCANVAS)
+        ============================================= */
+        #appInterno {
+            background: #0c0c0c;
+            border-left: 1px solid #1e1e1e;
+            width: 340px !important;
+        }
+        .admin-header {
+            background: #080808;
+            border-bottom: 1px solid rgba(200,168,75,0.2);
+            padding: 20px;
+        }
+        .admin-header h5 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            color: var(--acento);
+            margin: 0;
+        }
+
+        .input-dark {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: var(--branco);
+            border-radius: 0;
+            font-family: 'Barlow', sans-serif;
+        }
+        .input-dark:focus {
+            background: #111;
+            border-color: var(--acento);
+            color: var(--branco);
+            box-shadow: 0 0 0 2px rgba(200,168,75,0.15);
+        }
+        .input-dark::placeholder { color: #444; }
+
+        .btn-ouro {
+            background: var(--acento);
+            color: #000;
+            border: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 0;
+            padding: 10px 20px;
+            transition: opacity 0.2s;
+        }
+        .btn-ouro:hover { opacity: 0.85; color: #000; }
+
+        .btn-outline-ouro {
+            background: transparent;
+            color: var(--acento);
+            border: 1px solid rgba(200,168,75,0.4);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 0;
+            padding: 10px 16px;
+            transition: all 0.2s;
+        }
+        .btn-outline-ouro:hover {
+            background: rgba(200,168,75,0.1);
+            border-color: var(--acento);
+            color: var(--acento);
+        }
+
+        .admin-secao { padding: 20px; }
+        .admin-secao-titulo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #444;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 8px;
+        }
+
+        /* =============================================
+           MODAL PUBLICAÇÃO
+        ============================================= */
+        .modal-escuro .modal-content {
+            background: #0d0d0d;
+            border: 1px solid #2a2a2a;
+            border-radius: 0;
+        }
+        .modal-escuro .modal-header {
+            background: #080808;
+            border-bottom: 1px solid rgba(200,168,75,0.2);
+        }
+        .modal-escuro .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            color: var(--acento);
+        }
+        .modal-escuro .form-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+        }
+        .modal-escuro .modal-footer {
+            background: #080808;
+            border-top: 1px solid #1a1a1a;
+        }
+        .select-dark {
+            background-color: #111;
+            color: var(--branco);
+            border: 1px solid #2a2a2a;
+            border-radius: 0;
+        }
+        .select-dark:focus {
+            background-color: #111;
+            color: var(--branco);
+            border-color: var(--acento);
+            box-shadow: 0 0 0 2px rgba(200,168,75,0.15);
+        }
+        .select-dark option { background: #111; }
+
+        /* =============================================
+           ESTADO VAZIO
+        ============================================= */
+        .feed-vazio {
+            grid-column: 1 / -1;
             text-align: center;
-            color: white;
-            font-size: 14px;
-            animation: pulse 1.5s infinite;
+            padding: 60px 20px;
+            color: #333;
+        }
+        .feed-vazio i { font-size: 3rem; display: block; margin-bottom: 16px; }
+        .feed-vazio p {
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
+        /* =============================================
+           UTILITÁRIOS
+        ============================================= */
+        .divider-gold {
+            width: 40px; height: 2px;
+            background: var(--acento);
+            margin-bottom: 40px;
         }
     </style>
 </head>
 <body>
 
-    <div class="envelope-wrapper" onclick="openEnvelope()">
-        <div class="envelope" id="envelope">
-            <div class="flap top"></div>
-            <div class="flap right"></div>
-            <div class="flap bottom"></div>
-            <div class="flap left"></div>
-            
-            <div class="letter" id="letter">
-                <h1>EU TE AMO MEU MINDUIM</h1>
-                
-                <div class="letter-content">
-                    <p><strong>FELIZ MÊS ANIVERSÁRIO!</strong></p>
-                    <p>
-                    Você é muito mais do que uma princesa para mim; você é a mulher que transformou minha vida, que fez meu coração encontrar o verdadeiro significado do amor. A cada dia que passa, meu sentimento por você se fortalece, cresce e floresce, como se fosse sempre a primeira vez.<br><br>
-                    
-                    Sua força me inspira, sua bondade me comove, e o seu amor incondicional me faz sentir o homem mais sortudo do mundo. Você é minha luz, minha motivação, a razão pela qual desejo ser melhor a cada dia.<br><br>
-                    
-                    Prometo estar sempre ao seu lado, caminhando junto em cada sonho, em cada desafio e em cada vitória. Abraçarei os seus desejos como se fossem meus, cuidando do seu coração e te lembrando todos os dias que você é, e sempre será, a minha paixão eterna e o grande amor da minha vida.<br><br>
-                    
-                    Eu te amo, hoje e para sempre. ❤️
-                    </p>
-                </div>
+    <!-- TOPBAR -->
+    <div class="topbar d-none d-md-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-geo-alt me-1"></i>Bairro do Jurunas — Belém, Pará</span>
+            <a href="https://wa.me/5591999999999" target="_blank">
+                <i class="bi bi-whatsapp me-1"></i>(91) 99999-9999
+            </a>
+        </div>
+    </div>
 
-                <div class="video-area" id="videoArea">
-                    <hr style="width: 100%; border: 1px solid #ffe6e6; margin: 15px 0;">
-                    <p style="font-size: 12px; color: #777; margin-bottom: 5px;">Nunca fugir ❤️</p>
-                    
-                    <video id="myVideo" playsinline>
-                        <source src="1000312902.mp4" type="video/mp4">
-                        Seu navegador não suporta este vídeo.
-                    </video>
-                    
-                    <button class="play-btn" onclick="togglePlay()">
-                        ▶ Dar Play no Nosso Momento
-                    </button>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-oficial sticky-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://i.postimg.cc/W4L57vYy/Clube-do-remo-atual.png"
+                     alt="Escudo Remo" class="brand-escudo">
+                BULDOGS DO JURUNAS
+            </a>
+            <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#">Início</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#momentos">Momentos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#historia">História</a></li>
+                </ul>
+            </div>
+            <button class="btn-admin-trigger" data-bs-toggle="offcanvas" data-bs-target="#appInterno" onclick="verificarLogin()">
+                <i class="bi bi-lock me-1"></i> Admin
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-inner">
+            <p class="hero-eyebrow">Torcida Organizada · Fundada em 1985</p>
+            <img
+                src="https://i.postimg.cc/Qd24hnw9/ei-1771515845249-removebg-preview.png"
+                alt="e do Remo"
+                class="hero-escudo"
+            >
+            <h1 class="hero-title">BULDOGS<br><span>DO JURUNAS</span></h1>
+            <div class="hero-line"></div>
+            <p class="hero-sub">O Maior do Norte · Belém do Pará</p>
+        </div>
+        <div class="scroll-hint">
+            <i class="bi bi-chevron-down"></i>
+            <span>Rolar</span>
+        </div>
+    </section>
+
+    <!-- MOMENTOS -->
+    <section id="momentos" class="secao">
+        <div class="container">
+            <h2 class="secao-titulo">Últimos <span>Momentos</span></h2>
+            <p class="secao-sub">Galeria da torcida</p>
+
+            <div class="row g-3" id="feedContainer">
+                <!-- Preenchido via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTÓRIA -->
+    <section id="historia" class="historia-wrap secao">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <img
+                        src="https://picsum.photos/seed/jurunas/700/500"
+                        alt="Bairro do Jurunas"
+                        class="historia-img"
+                    >
+                </div>
+                <div class="col-lg-7">
+                    <h2 class="secao-titulo mb-2">A Nossa <span>História</span></h2>
+                    <p class="secao-sub mb-4">Raízes de Belém</p>
+                    <div class="divider-gold"></div>
+                    <div class="historia-texto">
+                        <p>Os <strong>Buldogs do Jurunas</strong> nasceram do amor incondicional pelo Clube do Remo e da força de um dos bairros mais tradicionais de Belém. Desde 1985, nossa torcida é presença garantida em cada batalha azulina, nas arquibancadas do Mangueirão e por todo o Pará.</p>
+                        <p class="mt-3">Somos mais do que uma torcida: somos comunidade, identidade e orgulho paraense. Cada camisa azul que veste as ruas do Jurunas carrega a história de quatro décadas de dedicação ao nosso Clube.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="click-hint">Clique para abrir</div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="rodape text-center">
+        <div class="container">
+            <p class="rodape-marca">BULDOGS DO JURUNAS</p>
+            <p>© 2026 · Todos os direitos reservados · Bairro do Jurunas, Belém — Pará</p>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <button class="lb-close" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> FECHAR
+                </button>
+                <div class="modal-body" id="lightboxContent"></div>
+            </div>
+        </div>
     </div>
 
-    <canvas id="canvas"></canvas>
+    <!-- OFFCANVAS ADMIN -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="appInterno">
+        <div class="admin-header d-flex justify-content-between align-items-center">
+            <h5><i class="bi bi-shield-lock-fill me-2"></i>GESTÃO BULDOGS</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
 
+        <!-- LOGIN -->
+        <div id="loginArea" class="admin-secao">
+            <p class="admin-secao-titulo">Acesso restrito</p>
+            <div class="mb-3">
+                <input
+                    type="password"
+                    id="senhaAcesso"
+                    class="form-control input-dark"
+                    placeholder="Senha de acesso"
+                    onkeydown="if(event.key==='Enter') tentarLogin()"
+                >
+            </div>
+            <button class="btn btn-ouro w-100" onclick="tentarLogin()">
+                <i class="bi bi-unlock me-1"></i> Entrar
+            </button>
+            <p id="loginErro" class="text-danger small mt-2" style="display:none; font-family:'Oswald'; letter-spacing:1px;">
+                Senha incorreta.
+            </p>
+        </div>
+
+        <!-- APP ADMIN -->
+        <div id="appArea" style="display:none;">
+            <div class="admin-secao">
+                <p class="admin-secao-titulo">Publicações</p>
+                <button class="btn btn-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalPublicacao">
+                    <i class="bi bi-camera-fill me-2"></i> Novo Momento
+                </button>
+            </div>
+            <div class="admin-secao border-top" style="border-color:#1a1a1a !important;">
+                <p class="admin-secao-titulo">Ações</p>
+                <button class="btn btn-outline-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalCadastro">
+                    <i class="bi bi-person-plus me-2"></i> Cadastrar Sócio
+                </button>
+                <button class="btn btn-outline-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalPix">
+                    <i class="bi bi-qr-code me-2"></i> Mensalidade PIX
+                </button>
+            </div>
+            <div class="admin-secao border-top" style="border-color:#1a1a1a !important;">
+                <button class="btn btn-outline-danger w-100 border-0 text-secondary" onclick="fazerLogout()" style="font-family:'Oswald'; letter-spacing:2px; font-size:0.8rem; border-radius:0;">
+                    <i class="bi bi-box-arrow-right me-2"></i> Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PUBLICAÇÃO -->
+    <div class="modal fade modal-escuro" id="modalPublicacao" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Nova Publicação</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formPublicacao">
+                    <div class="modal-body p-4">
+                        <div class="mb-4">
+                            <label class="form-label">Título</label>
+                            <input type="text" class="form-control input-dark" id="tituloPub" required placeholder="Ex: Final do Parazão 2026">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Tipo de Mídia</label>
+                            <select class="form-select select-dark" id="tipoPub" onchange="atualizarDicaTipo()">
+                                <option value="imagem">Imagem (Foto)</option>
+                                <option value="video">Vídeo (link MP4 direto)</option>
+                                <option value="instagram">Instagram (Reel / Post)</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">URL da Mídia</label>
+                            <input type="url" class="form-control input-dark" id="urlPub" required placeholder="https://...">
+                        </div>
+                        <small id="dicaTipo" class="text-muted" style="font-size:0.78rem; letter-spacing:0.5px;">
+                            Cole o link direto da imagem.
+                        </small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-ouro" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-ouro">
+                            <i class="bi bi-send me-1"></i> Publicar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CADASTRO (placeholder) -->
+    <div class="modal fade modal-escuro" id="modalCadastro" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Cadastrar Sócio</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control input-dark" placeholder="Nome do sócio">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">WhatsApp</label>
+                        <input type="tel" class="form-control input-dark" placeholder="(91) 9XXXX-XXXX">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Data de Entrada</label>
+                        <input type="date" class="form-control input-dark">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-ouro" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-ouro"><i class="bi bi-check-lg me-1"></i> Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIX (placeholder) -->
+    <div class="modal fade modal-escuro" id="modalPix" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-qr-code me-2"></i>Mensalidade PIX</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div style="width:200px; height:200px; background:#1a1a1a; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; border:1px solid #2a2a2a;">
+                        <i class="bi bi-qr-code-scan" style="font-size:5rem; color:#333;"></i>
+                    </div>
+                    <p style="font-family:'Oswald'; letter-spacing:2px; color:#555; font-size:0.8rem;">QR CODE DO PIX</p>
+                    <p class="mt-2" style="font-size:0.85rem; color:#444;">Chave PIX: <span style="color:var(--acento);">buldogs@jurunas.com</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let isOpen = false;
+        /* ============================================================
+           CONFIGURAÇÃO (altere aqui)
+        ============================================================ */
+        const SENHA_ADM = "buldogs1985"; // TROQUE para uma senha forte
 
-        function openEnvelope() {
-            if (isOpen) return;
-            isOpen = true;
-            
-            const envelope = document.querySelector('.envelope-wrapper');
-            envelope.classList.add('open');
-            document.querySelector('.click-hint').style.display = 'none';
-            
-            // Mostrar fogos
-            startFireworks();
+        /* ============================================================
+           NAVBAR SCROLL
+        ============================================================ */
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+        });
 
-            // Mostrar o vídeo com um pequeno atraso suave
-            setTimeout(() => {
-                const videoArea = document.getElementById('videoArea');
-                videoArea.style.display = 'flex';
-                // Pequeno delay para a transição de opacidade funcionar
-                setTimeout(() => {
-                    videoArea.style.opacity = '1';
-                    // Rola a carta suavemente para mostrar o vídeo
-                    const letter = document.getElementById('letter');
-                    letter.scrollTo({ top: letter.scrollHeight, behavior: 'smooth' });
-                }, 100);
-            }, 1000); 
+        /* ============================================================
+           BASE DE DADOS (localStorage)
+        ============================================================ */
+        const STORAGE_KEY = 'buldogs_feed_v2';
+
+        function getDBFeed() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) return JSON.parse(saved);
+            } catch (e) { /* ignora erro de parse */ }
+
+            // Posts de exemplo na primeira visita
+            const inicial = [
+                { id: 4, tipo: 'imagem', url: 'https://i.postimg.cc/7Gz34j6f/image.jpg',    titulo: 'Futebol e Força Comunitária', data: '12 MARÇO 2026' },
+                { id: 3, tipo: 'imagem', url: 'https://i.postimg.cc/jwfHTB54/image.jpg',    titulo: 'Noite de Celebração na Rua',  data: '05 MARÇO 2026' },
+                { id: 2, tipo: 'imagem', url: 'https://i.postimg.cc/r041T7mJ/image.jpg',    titulo: 'Vibração na Arquibancada',   data: '28 FEV 2026'   },
+                { id: 1, tipo: 'imagem', url: 'https://i.postimg.cc/MMB7wgT1/images_(3).jpg', titulo: 'Delegação no Estádio',     data: '20 FEV 2026'   },
+            ];
+            saveDBFeed(inicial);
+            return inicial;
         }
 
-        function togglePlay() {
-            const video = document.getElementById('myVideo');
-            const btn = document.querySelector('.play-btn');
-            
-            if (video.paused) {
-                video.play();
-                btn.innerHTML = "⏸ Pausar";
+        function saveDBFeed(data) {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+            catch(e) { console.warn('Não foi possível salvar:', e); }
+        }
+
+        /* ============================================================
+           RENDER FEED
+        ============================================================ */
+        function renderizarFeed() {
+            const db = getDBFeed();
+            const container = document.getElementById('feedContainer');
+            const isAdmin = sessionStorage.getItem('logado') === 'true';
+
+            if (!db.length) {
+                container.innerHTML = `
+                    <div class="feed-vazio">
+                        <i class="bi bi-image"></i>
+                        <p>Nenhum momento publicado ainda.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = db.map(p => {
+                const isMedia = p.tipo === 'video' || p.tipo === 'instagram';
+                const thumbSrc = p.tipo === 'imagem'
+                    ? p.url
+                    : `https://picsum.photos/seed/${p.id}/400/300`;
+
+                const badgeMap = { imagem: '', video: 'Vídeo', instagram: 'Reels' };
+
+                return `
+                <div class="col-md-6 col-lg-4">
+                    <div class="card-momento" onclick="abrirTelaCheia('${p.tipo}', \`${p.url}\`)">
+                        <div class="card-thumb">
+                            <img src="${thumbSrc}" alt="${p.titulo}" loading="lazy" onerror="this.src='https://picsum.photos/seed/${p.id}/400/300'">
+                            <div class="thumb-overlay"></div>
+                            ${isMedia ? `<div class="thumb-play"><i class="bi bi-play-circle-fill"></i></div>` : ''}
+                            ${badgeMap[p.tipo] ? `<span class="card-badge">${badgeMap[p.tipo]}</span>` : ''}
+                        </div>
+                        <div class="card-info">
+                            <p class="card-data">${p.data}</p>
+                            <h3 class="card-titulo">${p.titulo}</h3>
+                        </div>
+                        ${isAdmin ? `
+                        <div class="card-actions visivel">
+                            <button class="btn btn-sm btn-outline-danger w-100" style="border-radius:0; font-family:'Oswald'; letter-spacing:1px; font-size:0.75rem;"
+                                onclick="event.stopPropagation(); excluirPub(${p.id})">
+                                <i class="bi bi-trash me-1"></i> Apagar
+                            </button>
+                        </div>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        /* ============================================================
+           EXCLUIR
+        ============================================================ */
+        function excluirPub(id) {
+            if (!confirm('Apagar esta publicação?')) return;
+            const db = getDBFeed().filter(p => p.id !== id);
+            saveDBFeed(db);
+            renderizarFeed();
+        }
+
+        /* ============================================================
+           LIGHTBOX
+        ============================================================ */
+        function abrirTelaCheia(tipo, url) {
+            const caixa = document.getElementById('lightboxContent');
+            caixa.innerHTML = '';
+
+            if (tipo === 'imagem') {
+                caixa.innerHTML = `<img src="${url}" class="lb-img" alt="Imagem">`;
+            } else if (tipo === 'video') {
+                caixa.innerHTML = `<video src="${url}" class="lb-video" controls autoplay playsinline></video>`;
+            } else if (tipo === 'instagram') {
+                let link = url.split('?')[0];
+                if (!link.endsWith('/')) link += '/';
+                link += 'embed';
+                caixa.innerHTML = `<iframe src="${link}" class="lb-iframe" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen></iframe>`;
+            }
+
+            new bootstrap.Modal(document.getElementById('lightboxModal')).show();
+        }
+
+        // Limpa o conteúdo ao fechar (para o vídeo não continuar a tocar)
+        document.getElementById('lightboxModal').addEventListener('hidden.bs.modal', () => {
+            document.getElementById('lightboxContent').innerHTML = '';
+        });
+
+        /* ============================================================
+           DICA DINÂMICA NO FORMULÁRIO
+        ============================================================ */
+        function atualizarDicaTipo() {
+            const tipo = document.getElementById('tipoPub').value;
+            const dicas = {
+                imagem:    'Cole o link direto da imagem (ex: https://i.postimg.cc/...).',
+                video:     'Cole o link direto do arquivo MP4.',
+                instagram: 'Cole o link do post ou Reel do Instagram (ex: https://www.instagram.com/p/...).',
+            };
+            document.getElementById('dicaTipo').textContent = dicas[tipo];
+        }
+
+        /* ============================================================
+           FORMULÁRIO DE PUBLICAÇÃO
+        ============================================================ */
+        document.getElementById('formPublicacao').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const meses = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+            const hoje = new Date();
+            const dataFormatada = `${hoje.getDate()} ${meses[hoje.getMonth()]} ${hoje.getFullYear()}`;
+
+            const db = getDBFeed();
+            db.unshift({
+                id:     Date.now(),
+                titulo: document.getElementById('tituloPub').value.trim(),
+                tipo:   document.getElementById('tipoPub').value,
+                url:    document.getElementById('urlPub').value.trim(),
+                data:   dataFormatada,
+            });
+            saveDBFeed(db);
+            this.reset();
+            atualizarDicaTipo();
+
+            bootstrap.Modal.getInstance(document.getElementById('modalPublicacao')).hide();
+            renderizarFeed();
+        });
+
+        /* ============================================================
+           SISTEMA DE LOGIN
+        ============================================================ */
+        function verificarLogin() {
+            const logado = sessionStorage.getItem('logado') === 'true';
+            document.getElementById('loginArea').style.display = logado ? 'none' : 'block';
+            document.getElementById('appArea').style.display   = logado ? 'block' : 'none';
+        }
+
+        function tentarLogin() {
+            const senha = document.getElementById('senhaAcesso').value;
+            const erro  = document.getElementById('loginErro');
+            if (senha === SENHA_ADM) {
+                sessionStorage.setItem('logado', 'true');
+                erro.style.display = 'none';
+                document.getElementById('senhaAcesso').value = '';
+                verificarLogin();
+                renderizarFeed(); // Mostra botões de apagar
             } else {
-                video.pause();
-                btn.innerHTML = "▶ Dar Play no Nosso Momento";
+                erro.style.display = 'block';
             }
         }
 
-        // --- CÓDIGO DOS FOGOS DE ARTIFÍCIO ---
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 5 + 2;
-                this.vx = Math.cos(angle) * speed;
-                this.vy = Math.sin(angle) * speed;
-                this.alpha = 1;
-                this.gravity = 0.05;
-                this.decay = Math.random() * 0.015 + 0.005;
-            }
-            update() {
-                this.vx *= 0.98;
-                this.vy *= 0.98;
-                this.vy += this.gravity;
-                this.x += this.vx;
-                this.y += this.vy;
-                this.alpha -= this.decay;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
+        function fazerLogout() {
+            sessionStorage.removeItem('logado');
+            verificarLogin();
+            renderizarFeed();
         }
 
-        function createFirework(x, y) {
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#ff9900'];
-            for (let i = 0; i < 60; i++) {
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particles.push(new Particle(x, y, color));
-            }
-        }
-
-        function loop() {
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'source-over';
-            particles = particles.filter(p => p.alpha > 0);
-            particles.forEach(p => { p.update(); p.draw(); });
-            if (Math.random() < 0.05) {
-                createFirework(Math.random() * canvas.width, Math.random() * canvas.height * 0.6);
-            }
-            requestAnimationFrame(loop);
-        }
-
-        function startFireworks() {
-            createFirework(canvas.width / 2, canvas.height / 2);
-            loop();
-        }
+        /* ============================================================
+           INICIALIZAÇÃO
+        ============================================================ */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderizarFeed();
+            atualizarDicaTipo();
+            verificarLogin();
+        });
     </script>
 </body>
 </html>
