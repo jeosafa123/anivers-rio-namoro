@@ -7,6 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;600;700&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
@@ -18,1031 +19,382 @@
             --azul2:   #00307a;
             --branco:  #f5f5f0;
             --cinza:   #0d0d0d;
-            --acento:  #c8a84b; /* Dourado */
+            --acento:  #c8a84b; 
             --texto:   #e0ddd5;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
-
-        body {
-            background-color: #0a0a0a;
-            color: var(--texto);
-            font-family: 'Barlow', sans-serif;
-            font-weight: 400;
-            overflow-x: hidden;
-        }
-
+        body { background-color: #0a0a0a; color: var(--texto); font-family: 'Barlow', sans-serif; font-weight: 400; overflow-x: hidden; }
         ::selection { background: var(--acento); color: #000; }
 
+        .secao-opcional { display: none; }
+
         /* =============================================
-           TOPBAR
+           TOPBAR E NAVBAR
         ============================================= */
-        .topbar {
-            background: var(--cinza);
-            border-bottom: 1px solid rgba(200,168,75,0.2);
-            font-size: 0.8rem;
-            padding: 7px 0;
-            letter-spacing: 1px;
-            color: #888;
-        }
+        .topbar { background: var(--cinza); border-bottom: 1px solid rgba(200,168,75,0.2); font-size: 0.8rem; padding: 7px 0; letter-spacing: 1px; color: #888; }
         .topbar a { color: #888; text-decoration: none; transition: color 0.2s; }
         .topbar a:hover { color: var(--acento); }
 
-        /* =============================================
-           NAVBAR
-        ============================================= */
-        .navbar-oficial {
-            background: rgba(0, 15, 40, 0.97);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(200,168,75,0.25);
-            padding: 14px 0;
-            transition: padding 0.3s;
-        }
+        .navbar-oficial { background: rgba(0, 15, 40, 0.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(200,168,75,0.25); padding: 14px 0; transition: padding 0.3s; z-index: 1040;}
         .navbar-oficial.scrolled { padding: 8px 0; }
-
-        .navbar-brand {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.7rem;
-            letter-spacing: 3px;
-            color: var(--branco) !important;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brand-escudo {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-        }
-        .nav-link-pub {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #bbb !important;
-            padding: 4px 16px !important;
-            transition: color 0.2s;
-            position: relative;
-        }
-        .nav-link-pub::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 16px; right: 16px;
-            height: 1px;
-            background: var(--acento);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
+        
+        .brand-escudo { width: 36px; height: 36px; border-radius: 4px; }
+        .navbar-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 3px; color: var(--branco) !important; display: flex; align-items: center; gap: 10px; margin: 0; }
+        
+        .nav-link-pub { font-family: 'Oswald', sans-serif; font-size: 0.85rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: #bbb !important; padding: 4px 16px !important; transition: color 0.2s; position: relative; cursor: pointer; }
+        .nav-link-pub::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: var(--acento); transform: scaleX(0); transition: transform 0.3s; }
         .nav-link-pub:hover { color: var(--branco) !important; }
         .nav-link-pub:hover::after { transform: scaleX(1); }
 
-        .btn-admin-trigger {
-            background: transparent;
-            border: 1px solid rgba(200,168,75,0.4);
-            color: var(--acento);
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            padding: 6px 14px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-admin-trigger:hover {
-            background: rgba(200,168,75,0.1);
-            border-color: var(--acento);
-            color: var(--acento);
-        }
+        .btn-menu-lateral { background: transparent; border: none; color: var(--branco); font-size: 2rem; padding: 0; cursor: pointer; transition: color 0.2s; line-height: 1; }
+        .btn-menu-lateral:hover { color: var(--acento); }
+        .btn-admin-trigger { background: transparent; border: 1px solid rgba(200,168,75,0.4); color: var(--acento); font-size: 1.2rem; padding: 2px 10px; cursor: pointer; transition: all 0.2s; border-radius: 4px; }
+        .btn-admin-trigger:hover { background: rgba(200,168,75,0.1); border-color: var(--acento); color: var(--acento); }
+
+        /* =============================================
+           MENU PÚBLICO
+        ============================================= */
+        #menuPublico { background: #0c0c0c; border-right: 1px solid var(--acento); width: 300px !important; }
+        #menuPublico .offcanvas-header { border-bottom: 1px solid #1a1a1a; padding: 20px; }
+        .menu-pub-title { font-family: 'Bebas Neue', sans-serif; letter-spacing: 3px; font-size: 1.4rem; color: var(--acento); margin: 0; }
+        .menu-pub-link { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--branco); text-decoration: none; display: block; padding: 12px 20px; border-bottom: 1px solid #151515; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .menu-pub-link:hover { background: rgba(200,168,75,0.1); color: var(--acento); padding-left: 25px; }
+        .menu-pub-link i { margin-right: 10px; color: var(--acento); }
+        .menu-submenu { background: #080808; border-bottom: 1px solid #151515; }
+        .menu-submenu a { font-family: 'Barlow', sans-serif; font-size: 0.95rem; color: #aaa; text-decoration: none; display: block; padding: 10px 20px 10px 45px; transition: color 0.2s; cursor: pointer; }
+        .menu-submenu a:hover { color: var(--branco); }
 
         /* =============================================
            HERO
         ============================================= */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            background: #000;
-        }
-
-        /* Fundo animado */
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,31,77,0.8) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 40% at 20% 20%, rgba(200,168,75,0.05) 0%, transparent 60%);
-            z-index: 0;
-        }
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px),
-                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px);
-            background-size: 60px 60px;
-        }
-
-        .hero-inner {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 40px 20px;
-            animation: heroFade 1.2s ease both;
-        }
-
-        @keyframes heroFade {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-eyebrow {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 300;
-            font-size: 0.75rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--acento);
-            margin-bottom: 24px;
-            opacity: 0;
-            animation: heroFade 0.8s 0.3s ease both;
-        }
-
-        .hero-escudo {
-            width: 110px;
-            margin: 0 auto 28px;
-            filter: drop-shadow(0 0 30px rgba(200,168,75,0.3));
-            opacity: 0;
-            animation: heroFade 0.8s 0.5s ease both;
-        }
-
-        .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(4rem, 12vw, 10rem);
-            line-height: 0.9;
-            letter-spacing: 4px;
-            color: var(--branco);
-            text-shadow: 0 0 80px rgba(200,168,75,0.15);
-            opacity: 0;
-            animation: heroFade 0.8s 0.7s ease both;
-        }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #000; }
+        .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,31,77,0.8) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 20%, rgba(200,168,75,0.05) 0%, transparent 60%); z-index: 0; }
+        .hero-bg::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px), repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.02) 60px); background-size: 60px 60px; }
+        .hero-inner { position: relative; z-index: 1; text-align: center; padding: 40px 20px; animation: heroFade 1.2s ease both; }
+        @keyframes heroFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-eyebrow { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.75rem; letter-spacing: 6px; text-transform: uppercase; color: var(--acento); margin-bottom: 24px; opacity: 0; animation: heroFade 0.8s 0.3s ease both; }
+        .hero-escudo { width: 110px; margin: 0 auto 28px; filter: drop-shadow(0 0 30px rgba(200,168,75,0.3)); opacity: 0; animation: heroFade 0.8s 0.5s ease both; }
+        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 12vw, 10rem); line-height: 0.9; letter-spacing: 4px; color: var(--branco); text-shadow: 0 0 80px rgba(200,168,75,0.15); opacity: 0; animation: heroFade 0.8s 0.7s ease both; }
         .hero-title span { color: var(--acento); }
+        .hero-sub { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.85rem; letter-spacing: 8px; text-transform: uppercase; color: #777; margin-top: 20px; opacity: 0; animation: heroFade 0.8s 0.9s ease both; }
+        .hero-line { width: 60px; height: 1px; background: var(--acento); margin: 20px auto; opacity: 0; animation: heroFade 0.8s 1.1s ease both; }
 
-        .hero-sub {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 300;
-            font-size: 0.85rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            color: #777;
-            margin-top: 20px;
-            opacity: 0;
-            animation: heroFade 0.8s 0.9s ease both;
-        }
-
-        .hero-line {
-            width: 60px;
-            height: 1px;
-            background: var(--acento);
-            margin: 20px auto;
-            opacity: 0;
-            animation: heroFade 0.8s 1.1s ease both;
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #444;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            animation: bobbing 2s ease-in-out infinite;
-        }
-        @keyframes bobbing {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50%       { transform: translateX(-50%) translateY(6px); }
-        }
-
-        /* =============================================
-           SECÇÃO GERAL
-        ============================================= */
-        .secao {
-            padding: 80px 0;
-        }
-
-        .secao-titulo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            letter-spacing: 3px;
-            color: var(--branco);
-            margin-bottom: 4px;
-        }
+        /* SEÇÕES */
+        .secao { padding: 80px 0; }
+        .secao-titulo { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); letter-spacing: 3px; color: var(--branco); margin-bottom: 4px; }
         .secao-titulo span { color: var(--acento); }
-        .secao-sub {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 300;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: #555;
-            margin-bottom: 50px;
-        }
+        .secao-sub { font-family: 'Oswald', sans-serif; font-size: 0.75rem; font-weight: 300; letter-spacing: 5px; text-transform: uppercase; color: #555; margin-bottom: 50px; }
 
-        /* =============================================
-           FEED / CARDS
-        ============================================= */
-        .card-momento {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            cursor: pointer;
-            overflow: hidden;
-            transition: border-color 0.3s, transform 0.3s;
-        }
-        .card-momento:hover {
-            border-color: rgba(200,168,75,0.4);
-            transform: translateY(-4px);
-        }
-
-        .card-thumb {
-            height: 220px;
-            overflow: hidden;
-            position: relative;
-            background: #0a0a0a;
-        }
-        .card-thumb img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            display: block;
-        }
+        /* CARDS MOMENTO */
+        .card-momento { background: #111; border: 1px solid #1e1e1e; cursor: pointer; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+        .card-momento:hover { border-color: rgba(200,168,75,0.4); transform: translateY(-4px); }
+        .card-thumb { height: 220px; overflow: hidden; position: relative; background: #0a0a0a; }
+        .card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
         .card-momento:hover .card-thumb img { transform: scale(1.06); }
+        .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%); }
+        .card-info { padding: 18px 20px 16px; }
+        .card-data { font-size: 0.7rem; letter-spacing: 2px; color: #555; text-transform: uppercase; margin-bottom: 8px; font-family: 'Oswald', sans-serif; }
+        .card-titulo { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: var(--branco); }
 
-        .thumb-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%);
-        }
-        .thumb-play {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: rgba(255,255,255,0.75);
-            transition: color 0.2s, transform 0.2s;
-        }
-        .card-momento:hover .thumb-play { color: var(--branco); transform: scale(1.1); }
+        /* CRONOGRAMA */
+        .secao-cronograma { background-color: #080808; border-top: 1px solid #1a1a1a; }
+        .evento-card { background: #111; border-left: 3px solid var(--acento); padding: 20px; margin-bottom: 15px; display: flex; align-items: center; transition: transform 0.3s; }
+        .evento-card:hover { transform: translateX(8px); background: #151515; }
+        .evento-data { width: 110px; font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--acento); text-align: center; border-right: 1px solid #222; margin-right: 20px; padding-right: 20px;}
 
-        .card-badge {
-            position: absolute;
-            top: 12px; right: 12px;
-            background: var(--acento);
-            color: #000;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 3px 8px;
-        }
+        /* LOJA */
+        .card-produto { background: #111; border: 1px solid #1e1e1e; overflow: hidden; transition: transform 0.3s; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative;}
+        .produto-img { height: 200px; width: 100%; object-fit: cover; background: #0a0a0a; border-bottom: 1px solid #1e1e1e; }
+        .produto-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .produto-titulo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--branco); text-transform: uppercase; }
+        .produto-preco { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--acento); margin-bottom: 15px; }
+        .btn-comprar { background: #25D366; color: #fff; border: none; font-family: 'Oswald', font-weight: 700; padding: 10px; text-decoration: none; display: block; }
+        .badge-categoria { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: var(--acento); border: 1px solid var(--acento); font-size: 0.7rem; padding: 3px 8px; }
 
-        .card-info {
-            padding: 18px 20px 16px;
-        }
-        .card-data {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: #555;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 300;
-        }
-        .card-titulo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--branco);
-            line-height: 1.3;
-            letter-spacing: 0.5px;
-        }
+        /* ADMIN */
+        #appInterno { background: #0c0c0c; border-left: 1px solid #1e1e1e; width: 340px !important; }
+        .admin-header { background: #080808; border-bottom: 1px solid rgba(200,168,75,0.2); padding: 20px; }
+        .input-dark { background: #111; border: 1px solid #2a2a2a; color: var(--branco); border-radius: 0; }
+        .input-dark:focus { background: #111; border-color: var(--acento); color: #fff; box-shadow: none; }
+        .btn-ouro { background: var(--acento); color: #000; border: none; font-family: 'Oswald', font-weight: 700; padding: 10px 20px; text-transform: uppercase; }
+        .nav-tabs-dark .nav-link { color: #555; font-family: 'Oswald'; font-size: 0.75rem; border: none; }
+        .nav-tabs-dark .nav-link.active { color: var(--acento); background: transparent; border-bottom: 2px solid var(--acento); }
+        .member-item-dark { background: #111; border-left: 3px solid var(--acento); padding: 12px; margin-bottom: 10px; border: 1px solid #1a1a1a; }
+        .select-dark { background-color: #111; color: var(--branco); border: 1px solid #2a2a2a; border-radius: 0; }
 
-        .card-actions {
-            display: none;
-            padding: 0 20px 16px;
-        }
-        .card-actions.visivel { display: block; }
-
-        /* =============================================
-           LIGHTBOX
-        ============================================= */
-        #lightboxModal .modal-content {
-            background: transparent;
-            border: none;
-        }
-        #lightboxModal .modal-body {
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-        }
-        .lb-close {
-            position: absolute;
-            top: 10px; right: 10px;
-            z-index: 1060;
-            background: rgba(0,0,0,0.7);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #fff;
-            font-size: 1rem;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 1px;
-            transition: background 0.2s;
-        }
-        .lb-close:hover { background: rgba(200,168,75,0.2); }
-
-        .lb-img {
-            max-width: 100%;
-            max-height: 88vh;
-            object-fit: contain;
-            border: 1px solid rgba(200,168,75,0.2);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-        }
-        .lb-video {
-            max-width: 100%;
-            max-height: 88vh;
-            width: 900px;
-            border: 1px solid rgba(200,168,75,0.2);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-        }
-        .lb-iframe {
-            width: 100%;
-            max-width: 400px;
-            height: 80vh;
-            border: none;
-            border-radius: 6px;
-        }
-
-        /* =============================================
-           HISTÓRIA
-        ============================================= */
-        .historia-wrap {
-            background: #080808;
-            border-top: 1px solid #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
-        }
-        .historia-img {
-            width: 100%; height: 380px;
-            object-fit: cover;
-            filter: grayscale(60%) contrast(1.1);
-            border: 1px solid #1e1e1e;
-        }
-        .historia-texto {
-            font-size: 1.05rem;
-            line-height: 1.85;
-            color: #888;
-        }
-        .historia-texto strong { color: var(--acento); font-weight: 500; }
-
-        /* =============================================
-           RODAPÉ
-        ============================================= */
-        .rodape {
-            background: #000;
-            border-top: 1px solid rgba(200,168,75,0.15);
-            padding: 40px 0 24px;
-            color: #3a3a3a;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-        .rodape-marca {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
-            letter-spacing: 4px;
-            color: #222;
-            margin-bottom: 6px;
-        }
-
-        /* =============================================
-           PAINEL ADMIN (OFFCANVAS)
-        ============================================= */
-        #appInterno {
-            background: #0c0c0c;
-            border-left: 1px solid #1e1e1e;
-            width: 340px !important;
-        }
-        .admin-header {
-            background: #080808;
-            border-bottom: 1px solid rgba(200,168,75,0.2);
-            padding: 20px;
-        }
-        .admin-header h5 {
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 3px;
-            font-size: 1.2rem;
-            color: var(--acento);
-            margin: 0;
-        }
-
-        .input-dark {
-            background: #111;
-            border: 1px solid #2a2a2a;
-            color: var(--branco);
-            border-radius: 0;
-            font-family: 'Barlow', sans-serif;
-        }
-        .input-dark:focus {
-            background: #111;
-            border-color: var(--acento);
-            color: var(--branco);
-            box-shadow: 0 0 0 2px rgba(200,168,75,0.15);
-        }
-        .input-dark::placeholder { color: #444; }
-
-        .btn-ouro {
-            background: var(--acento);
-            color: #000;
-            border: none;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 0;
-            padding: 10px 20px;
-            transition: opacity 0.2s;
-        }
-        .btn-ouro:hover { opacity: 0.85; color: #000; }
-
-        .btn-outline-ouro {
-            background: transparent;
-            color: var(--acento);
-            border: 1px solid rgba(200,168,75,0.4);
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 0;
-            padding: 10px 16px;
-            transition: all 0.2s;
-        }
-        .btn-outline-ouro:hover {
-            background: rgba(200,168,75,0.1);
-            border-color: var(--acento);
-            color: var(--acento);
-        }
-
-        .admin-secao { padding: 20px; }
-        .admin-secao-titulo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #444;
-            margin-bottom: 16px;
-            border-bottom: 1px solid #1a1a1a;
-            padding-bottom: 8px;
-        }
-
-        /* =============================================
-           MODAL PUBLICAÇÃO
-        ============================================= */
-        .modal-escuro .modal-content {
-            background: #0d0d0d;
-            border: 1px solid #2a2a2a;
-            border-radius: 0;
-        }
-        .modal-escuro .modal-header {
-            background: #080808;
-            border-bottom: 1px solid rgba(200,168,75,0.2);
-        }
-        .modal-escuro .modal-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-            color: var(--acento);
-        }
-        .modal-escuro .form-label {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #666;
-        }
-        .modal-escuro .modal-footer {
-            background: #080808;
-            border-top: 1px solid #1a1a1a;
-        }
-        .select-dark {
-            background-color: #111;
-            color: var(--branco);
-            border: 1px solid #2a2a2a;
-            border-radius: 0;
-        }
-        .select-dark:focus {
-            background-color: #111;
-            color: var(--branco);
-            border-color: var(--acento);
-            box-shadow: 0 0 0 2px rgba(200,168,75,0.15);
-        }
-        .select-dark option { background: #111; }
-
-        /* =============================================
-           ESTADO VAZIO
-        ============================================= */
-        .feed-vazio {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: #333;
-        }
-        .feed-vazio i { font-size: 3rem; display: block; margin-bottom: 16px; }
-        .feed-vazio p {
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-        }
-
-        /* =============================================
-           UTILITÁRIOS
-        ============================================= */
-        .divider-gold {
-            width: 40px; height: 2px;
-            background: var(--acento);
-            margin-bottom: 40px;
-        }
+        /* RODAPÉ */
+        .rodape { background: #000; border-top: 1px solid rgba(200,168,75,0.15); padding: 40px 0 24px; color: #3a3a3a; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <!-- TOPBAR -->
-    <div class="topbar d-none d-md-block">
-        <div class="container d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-geo-alt me-1"></i>Bairro do Jurunas — Belém, Pará</span>
-            <a href="https://wa.me/5591999999999" target="_blank">
-                <i class="bi bi-whatsapp me-1"></i>(91) 99999-9999
-            </a>
-        </div>
-    </div>
-
-    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-oficial sticky-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://i.postimg.cc/W4L57vYy/Clube-do-remo-atual.png"
-                     alt="Escudo Remo" class="brand-escudo">
-                BULDOGS DO JURUNAS
-            </a>
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn-menu-lateral" data-bs-toggle="offcanvas" data-bs-target="#menuPublico"><i class="bi bi-list"></i></button>
+                <a class="navbar-brand" href="#" onclick="navegarPara('home')">
+                    <img src="https://i.postimg.cc/W4L57vYy/Clube-do-remo-atual.png" alt="Escudo Remo" class="brand-escudo">
+                    <span>BULDOGS</span>
+                </a>
+            </div>
             <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#">Início</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#momentos">Momentos</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-pub" href="#historia">História</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" onclick="navegarPara('momentos')">Momentos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" onclick="navegarPara('cronograma')">Agenda</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" onclick="navegarPara('loja')">Loja</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-pub" onclick="navegarPara('historia')">História</a></li>
                 </ul>
             </div>
-            <button class="btn-admin-trigger" data-bs-toggle="offcanvas" data-bs-target="#appInterno" onclick="verificarLogin()">
-                <i class="bi bi-lock me-1"></i> Admin
-            </button>
+            <button class="btn-admin-trigger" data-bs-toggle="offcanvas" data-bs-target="#appInterno" onclick="verificarLogin()"><i class="bi bi-three-dots-vertical"></i></button>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuPublico">
+        <div class="offcanvas-header"><h5 class="menu-pub-title">MENU BULDOGS</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button></div>
+        <div class="offcanvas-body p-0">
+            <div class="menu-submenu">
+                <a onclick="navegarPara('loja', 'Camisas')" data-bs-dismiss="offcanvas">Camisas</a>
+                <a onclick="navegarPara('loja', 'Todos')" data-bs-dismiss="offcanvas">Ver Loja</a>
+            </div>
+            <a onclick="navegarPara('momentos')" class="menu-pub-link" data-bs-dismiss="offcanvas"><i class="bi bi-image"></i> Últimos Momentos</a>
+            <a onclick="navegarPara('cronograma')" class="menu-pub-link" data-bs-dismiss="offcanvas"><i class="bi bi-calendar-event"></i> Agenda</a>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
         <div class="hero-bg"></div>
         <div class="hero-inner">
             <p class="hero-eyebrow">Torcida Organizada · Fundada em 1985</p>
-            <img
-                src="https://i.postimg.cc/Qd24hnw9/ei-1771515845249-removebg-preview.png"
-                alt="e do Remo"
-                class="hero-escudo"
-            >
+            <img src="https://i.postimg.cc/Qd24hnw9/ei-1771515845249-removebg-preview.png" class="hero-escudo">
             <h1 class="hero-title">BULDOGS<br><span>DO JURUNAS</span></h1>
-            <div class="hero-line"></div>
-            <p class="hero-sub">O Maior do Norte · Belém do Pará</p>
-        </div>
-        <div class="scroll-hint">
-            <i class="bi bi-chevron-down"></i>
-            <span>Rolar</span>
         </div>
     </section>
 
-    <!-- MOMENTOS -->
     <section id="momentos" class="secao">
         <div class="container">
             <h2 class="secao-titulo">Últimos <span>Momentos</span></h2>
-            <p class="secao-sub">Galeria da torcida</p>
-
-            <div class="row g-3" id="feedContainer">
-                <!-- Preenchido via JS -->
-            </div>
+            <div class="row g-3" id="feedContainer"></div>
         </div>
     </section>
 
-    <!-- HISTÓRIA -->
-    <section id="historia" class="historia-wrap secao">
+    <section id="cronograma" class="secao secao-cronograma secao-opcional">
         <div class="container">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-5">
-                    <img
-                        src="https://picsum.photos/seed/jurunas/700/500"
-                        alt="Bairro do Jurunas"
-                        class="historia-img"
-                    >
-                </div>
-                <div class="col-lg-7">
-                    <h2 class="secao-titulo mb-2">A Nossa <span>História</span></h2>
-                    <p class="secao-sub mb-4">Raízes de Belém</p>
-                    <div class="divider-gold"></div>
-                    <div class="historia-texto">
-                        <p>Os <strong>Buldogs do Jurunas</strong> nasceram do amor incondicional pelo Clube do Remo e da força de um dos bairros mais tradicionais de Belém. Desde 1985, nossa torcida é presença garantida em cada batalha azulina, nas arquibancadas do Mangueirão e por todo o Pará.</p>
-                        <p class="mt-3">Somos mais do que uma torcida: somos comunidade, identidade e orgulho paraense. Cada camisa azul que veste as ruas do Jurunas carrega a história de quatro décadas de dedicação ao nosso Clube.</p>
-                    </div>
-                </div>
-            </div>
+            <h2 class="secao-titulo">Nosso <span>Cronograma</span></h2>
+            <div id="cronogramaContainer"></div>
         </div>
     </section>
 
-    <!-- RODAPÉ -->
-    <footer class="rodape text-center">
+    <section id="loja" class="secao secao-opcional">
         <div class="container">
-            <p class="rodape-marca">BULDOGS DO JURUNAS</p>
-            <p>© 2026 · Todos os direitos reservados · Bairro do Jurunas, Belém — Pará</p>
+            <h2 class="secao-titulo">Boutique <span>Buldogs</span></h2>
+            <p class="secao-sub" id="subtituloLoja">Materiais Oficiais</p>
+            <div class="row g-4 justify-content-center" id="lojaContainer"></div>
         </div>
-    </footer>
+    </section>
 
-    <!-- LIGHTBOX MODAL -->
-    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <button class="lb-close" data-bs-dismiss="modal">
-                    <i class="bi bi-x-lg me-1"></i> FECHAR
-                </button>
-                <div class="modal-body" id="lightboxContent"></div>
-            </div>
+    <section id="historia" class="secao historia-wrap">
+        <div class="container">
+            <h2 class="secao-titulo">Nossa <span>História</span></h2>
+            <div class="historia-texto">A força de um bairro, o amor por um clube. Desde 1985 representando o Jurunas.</div>
         </div>
-    </div>
+    </section>
 
-    <!-- OFFCANVAS ADMIN -->
+    <footer class="rodape text-center"><div class="container">© 2026 · BULDOGS DO JURUNAS</div></footer>
+
     <div class="offcanvas offcanvas-end" tabindex="-1" id="appInterno">
         <div class="admin-header d-flex justify-content-between align-items-center">
-            <h5><i class="bi bi-shield-lock-fill me-2"></i>GESTÃO BULDOGS</h5>
+            <h5 style="font-family:'Bebas Neue'; color:var(--acento);">GESTÃO BULDOGS</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
-
-        <!-- LOGIN -->
-        <div id="loginArea" class="admin-secao">
-            <p class="admin-secao-titulo">Acesso restrito</p>
-            <div class="mb-3">
-                <input
-                    type="password"
-                    id="senhaAcesso"
-                    class="form-control input-dark"
-                    placeholder="Senha de acesso"
-                    onkeydown="if(event.key==='Enter') tentarLogin()"
-                >
-            </div>
-            <button class="btn btn-ouro w-100" onclick="tentarLogin()">
-                <i class="bi bi-unlock me-1"></i> Entrar
-            </button>
-            <p id="loginErro" class="text-danger small mt-2" style="display:none; font-family:'Oswald'; letter-spacing:1px;">
-                Senha incorreta.
-            </p>
+        <div id="loginArea" class="p-4">
+            <input type="password" id="senhaAcesso" class="form-control input-dark mb-3" placeholder="Senha (1234)">
+            <button class="btn btn-ouro w-100" onclick="tentarLogin()">Acessar</button>
         </div>
-
-        <!-- APP ADMIN -->
         <div id="appArea" style="display:none;">
-            <div class="admin-secao">
-                <p class="admin-secao-titulo">Publicações</p>
-                <button class="btn btn-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalPublicacao">
-                    <i class="bi bi-camera-fill me-2"></i> Novo Momento
-                </button>
-            </div>
-            <div class="admin-secao border-top" style="border-color:#1a1a1a !important;">
-                <p class="admin-secao-titulo">Ações</p>
-                <button class="btn btn-outline-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalCadastro">
-                    <i class="bi bi-person-plus me-2"></i> Cadastrar Sócio
-                </button>
-                <button class="btn btn-outline-ouro w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalPix">
-                    <i class="bi bi-qr-code me-2"></i> Mensalidade PIX
-                </button>
-            </div>
-            <div class="admin-secao border-top" style="border-color:#1a1a1a !important;">
-                <button class="btn btn-outline-danger w-100 border-0 text-secondary" onclick="fazerLogout()" style="font-family:'Oswald'; letter-spacing:2px; font-size:0.8rem; border-radius:0;">
-                    <i class="bi bi-box-arrow-right me-2"></i> Sair
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL PUBLICAÇÃO -->
-    <div class="modal fade modal-escuro" id="modalPublicacao" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Nova Publicação</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="formPublicacao">
-                    <div class="modal-body p-4">
-                        <div class="mb-4">
-                            <label class="form-label">Título</label>
-                            <input type="text" class="form-control input-dark" id="tituloPub" required placeholder="Ex: Final do Parazão 2026">
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Tipo de Mídia</label>
-                            <select class="form-select select-dark" id="tipoPub" onchange="atualizarDicaTipo()">
-                                <option value="imagem">Imagem (Foto)</option>
-                                <option value="video">Vídeo (link MP4 direto)</option>
-                                <option value="instagram">Instagram (Reel / Post)</option>
+            <ul class="nav nav-tabs nav-tabs-dark px-2 pt-2">
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabLoja">Loja</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSocios">Sócios</button></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tabLoja">
+                    <div class="p-3">
+                        <form id="formLojaAdmin" class="mb-4">
+                            <input type="hidden" id="editProdId" value="">
+                            <input type="text" id="nomeProduto" class="form-control input-dark mb-2" placeholder="Nome do Material" required>
+                            <select class="form-select select-dark mb-2" id="categoriaProduto" required>
+                                <option value="Camisas">Camisas</option>
+                                <option value="Calças">Calças</option>
+                                <option value="Chapéus">Chapéus</option>
+                                <option value="Bandeiras">Bandeiras</option>
+                                <option value="Outros">Outros</option>
                             </select>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">URL da Mídia</label>
-                            <input type="url" class="form-control input-dark" id="urlPub" required placeholder="https://...">
-                        </div>
-                        <small id="dicaTipo" class="text-muted" style="font-size:0.78rem; letter-spacing:0.5px;">
-                            Cole o link direto da imagem.
-                        </small>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-ouro" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-ouro">
-                            <i class="bi bi-send me-1"></i> Publicar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                            <input type="text" id="precoProduto" class="form-control input-dark mb-2" placeholder="Preço (Ex: 75,00)" required>
+                            
+                            <div class="mb-2">
+                                <label class="small text-muted d-block mb-1">Como adicionar a foto?</label>
+                                <div class="btn-group w-100 mb-2">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleImgSource('link')">Por Link</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleImgSource('file')">Subir Foto</button>
+                                </div>
+                                <input type="url" id="imgProdutoLink" class="form-control input-dark mb-2" placeholder="URL da Imagem">
+                                <input type="file" id="imgProdutoFile" class="form-control input-dark mb-2" accept="image/*" style="display:none;">
+                            </div>
 
-    <!-- MODAL CADASTRO (placeholder) -->
-    <div class="modal fade modal-escuro" id="modalCadastro" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Cadastrar Sócio</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="mb-3">
-                        <label class="form-label">Nome Completo</label>
-                        <input type="text" class="form-control input-dark" placeholder="Nome do sócio">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">WhatsApp</label>
-                        <input type="tel" class="form-control input-dark" placeholder="(91) 9XXXX-XXXX">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Data de Entrada</label>
-                        <input type="date" class="form-control input-dark">
+                            <button type="submit" id="btnSalvarProd" class="btn btn-ouro w-100">Adicionar Material</button>
+                            <button type="button" id="btnCancelaEdit" class="btn btn-sm btn-link text-secondary w-100 mt-1" style="display:none;" onclick="cancelarEdicao()">Cancelar Edição</button>
+                        </form>
+                        <p class="small text-muted border-bottom pb-2">Itens em Estoque</p>
+                        <div id="listaLojaAdmin"></div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline-ouro" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-ouro"><i class="bi bi-check-lg me-1"></i> Cadastrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL PIX (placeholder) -->
-    <div class="modal fade modal-escuro" id="modalPix" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-qr-code me-2"></i>Mensalidade PIX</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <div style="width:200px; height:200px; background:#1a1a1a; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; border:1px solid #2a2a2a;">
-                        <i class="bi bi-qr-code-scan" style="font-size:5rem; color:#333;"></i>
-                    </div>
-                    <p style="font-family:'Oswald'; letter-spacing:2px; color:#555; font-size:0.8rem;">QR CODE DO PIX</p>
-                    <p class="mt-2" style="font-size:0.85rem; color:#444;">Chave PIX: <span style="color:var(--acento);">buldogs@jurunas.com</span></p>
-                </div>
+                <div class="tab-pane fade" id="tabSocios"><div class="p-3" id="listaSociosContainer"></div></div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /* ============================================================
-           CONFIGURAÇÃO (altere aqui)
-        ============================================================ */
-        const SENHA_ADM = "buldogs1985"; // TROQUE para uma senha forte
+        const SENHA_ADM = "1234";
+        const WHATSAPP_OFICIAL = "5591999999999"; 
+        let imgSourceMode = 'link'; 
 
-        /* ============================================================
-           NAVBAR SCROLL
-        ============================================================ */
-        window.addEventListener('scroll', () => {
-            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
-        });
-
-        /* ============================================================
-           BASE DE DADOS (localStorage)
-        ============================================================ */
-        const STORAGE_KEY = 'buldogs_feed_v2';
-
-        function getDBFeed() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) return JSON.parse(saved);
-            } catch (e) { /* ignora erro de parse */ }
-
-            // Posts de exemplo na primeira visita
-            const inicial = [
-                { id: 4, tipo: 'imagem', url: 'https://i.postimg.cc/7Gz34j6f/image.jpg',    titulo: 'Futebol e Força Comunitária', data: '12 MARÇO 2026' },
-                { id: 3, tipo: 'imagem', url: 'https://i.postimg.cc/jwfHTB54/image.jpg',    titulo: 'Noite de Celebração na Rua',  data: '05 MARÇO 2026' },
-                { id: 2, tipo: 'imagem', url: 'https://i.postimg.cc/r041T7mJ/image.jpg',    titulo: 'Vibração na Arquibancada',   data: '28 FEV 2026'   },
-                { id: 1, tipo: 'imagem', url: 'https://i.postimg.cc/MMB7wgT1/images_(3).jpg', titulo: 'Delegação no Estádio',     data: '20 FEV 2026'   },
-            ];
-            saveDBFeed(inicial);
-            return inicial;
-        }
-
-        function saveDBFeed(data) {
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-            catch(e) { console.warn('Não foi possível salvar:', e); }
-        }
-
-        /* ============================================================
-           RENDER FEED
-        ============================================================ */
-        function renderizarFeed() {
-            const db = getDBFeed();
-            const container = document.getElementById('feedContainer');
-            const isAdmin = sessionStorage.getItem('logado') === 'true';
-
-            if (!db.length) {
-                container.innerHTML = `
-                    <div class="feed-vazio">
-                        <i class="bi bi-image"></i>
-                        <p>Nenhum momento publicado ainda.</p>
-                    </div>`;
-                return;
+        // NAVEGAÇÃO
+        function navegarPara(id, filtro = 'Todos') {
+            const secoesOpcionais = ['cronograma', 'loja'];
+            if (id === 'home' || id === 'momentos' || id === 'historia') {
+                secoesOpcionais.forEach(s => document.getElementById(s).style.display = 'none');
+            } else if (secoesOpcionais.includes(id)) {
+                document.getElementById(id).style.display = 'block';
+                secoesOpcionais.forEach(s => { if(s !== id) document.getElementById(s).style.display = 'none'; });
             }
-
-            container.innerHTML = db.map(p => {
-                const isMedia = p.tipo === 'video' || p.tipo === 'instagram';
-                const thumbSrc = p.tipo === 'imagem'
-                    ? p.url
-                    : `https://picsum.photos/seed/${p.id}/400/300`;
-
-                const badgeMap = { imagem: '', video: 'Vídeo', instagram: 'Reels' };
-
-                return `
-                <div class="col-md-6 col-lg-4">
-                    <div class="card-momento" onclick="abrirTelaCheia('${p.tipo}', \`${p.url}\`)">
-                        <div class="card-thumb">
-                            <img src="${thumbSrc}" alt="${p.titulo}" loading="lazy" onerror="this.src='https://picsum.photos/seed/${p.id}/400/300'">
-                            <div class="thumb-overlay"></div>
-                            ${isMedia ? `<div class="thumb-play"><i class="bi bi-play-circle-fill"></i></div>` : ''}
-                            ${badgeMap[p.tipo] ? `<span class="card-badge">${badgeMap[p.tipo]}</span>` : ''}
-                        </div>
-                        <div class="card-info">
-                            <p class="card-data">${p.data}</p>
-                            <h3 class="card-titulo">${p.titulo}</h3>
-                        </div>
-                        ${isAdmin ? `
-                        <div class="card-actions visivel">
-                            <button class="btn btn-sm btn-outline-danger w-100" style="border-radius:0; font-family:'Oswald'; letter-spacing:1px; font-size:0.75rem;"
-                                onclick="event.stopPropagation(); excluirPub(${p.id})">
-                                <i class="bi bi-trash me-1"></i> Apagar
-                            </button>
-                        </div>` : ''}
-                    </div>
-                </div>`;
-            }).join('');
+            if (id === 'loja') filtrarLoja(filtro);
+            window.scrollTo({ top: document.getElementById(id).offsetTop - 70, behavior: 'smooth' });
         }
 
-        /* ============================================================
-           EXCLUIR
-        ============================================================ */
-        function excluirPub(id) {
-            if (!confirm('Apagar esta publicação?')) return;
-            const db = getDBFeed().filter(p => p.id !== id);
-            saveDBFeed(db);
-            renderizarFeed();
+        // DATABASE
+        function getDBLoja() { return JSON.parse(localStorage.getItem('bd_loja_v2')) || []; }
+        function saveDBLoja(data) { localStorage.setItem('bd_loja_v2', JSON.stringify(data)); }
+
+        // TOGGLE FONTE IMAGEM
+        function toggleImgSource(mode) {
+            imgSourceMode = mode;
+            document.getElementById('imgProdutoLink').style.display = mode === 'link' ? 'block' : 'none';
+            document.getElementById('imgProdutoFile').style.display = mode === 'file' ? 'block' : 'none';
         }
 
-        /* ============================================================
-           LIGHTBOX
-        ============================================================ */
-        function abrirTelaCheia(tipo, url) {
-            const caixa = document.getElementById('lightboxContent');
-            caixa.innerHTML = '';
+        // EDITAR PRODUTO
+        function prepararEdicao(id) {
+            const db = getDBLoja();
+            const p = db.find(prod => prod.id == id);
+            if(!p) return;
 
-            if (tipo === 'imagem') {
-                caixa.innerHTML = `<img src="${url}" class="lb-img" alt="Imagem">`;
-            } else if (tipo === 'video') {
-                caixa.innerHTML = `<video src="${url}" class="lb-video" controls autoplay playsinline></video>`;
-            } else if (tipo === 'instagram') {
-                let link = url.split('?')[0];
-                if (!link.endsWith('/')) link += '/';
-                link += 'embed';
-                caixa.innerHTML = `<iframe src="${link}" class="lb-iframe" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen></iframe>`;
-            }
-
-            new bootstrap.Modal(document.getElementById('lightboxModal')).show();
+            document.getElementById('editProdId').value = p.id;
+            document.getElementById('nomeProduto').value = p.nome;
+            document.getElementById('categoriaProduto').value = p.cat;
+            document.getElementById('precoProduto').value = p.preco;
+            document.getElementById('imgProdutoLink').value = p.img;
+            
+            document.getElementById('btnSalvarProd').innerText = "Salvar Alterações";
+            document.getElementById('btnCancelaEdit').style.display = 'block';
+            toggleImgSource('link');
         }
 
-        // Limpa o conteúdo ao fechar (para o vídeo não continuar a tocar)
-        document.getElementById('lightboxModal').addEventListener('hidden.bs.modal', () => {
-            document.getElementById('lightboxContent').innerHTML = '';
-        });
-
-        /* ============================================================
-           DICA DINÂMICA NO FORMULÁRIO
-        ============================================================ */
-        function atualizarDicaTipo() {
-            const tipo = document.getElementById('tipoPub').value;
-            const dicas = {
-                imagem:    'Cole o link direto da imagem (ex: https://i.postimg.cc/...).',
-                video:     'Cole o link direto do arquivo MP4.',
-                instagram: 'Cole o link do post ou Reel do Instagram (ex: https://www.instagram.com/p/...).',
-            };
-            document.getElementById('dicaTipo').textContent = dicas[tipo];
+        function cancelarEdicao() {
+            document.getElementById('formLojaAdmin').reset();
+            document.getElementById('editProdId').value = "";
+            document.getElementById('btnSalvarProd').innerText = "Adicionar Material";
+            document.getElementById('btnCancelaEdit').style.display = 'none';
         }
 
-        /* ============================================================
-           FORMULÁRIO DE PUBLICAÇÃO
-        ============================================================ */
-        document.getElementById('formPublicacao').addEventListener('submit', function(e) {
+        // SALVAR PRODUTO (NOVO OU EDITAR)
+        document.getElementById('formLojaAdmin').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const db = getDBLoja();
+            const idEdit = document.getElementById('editProdId').value;
+            
+            let finalImg = document.getElementById('imgProdutoLink').value;
 
-            const meses = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
-            const hoje = new Date();
-            const dataFormatada = `${hoje.getDate()} ${meses[hoje.getMonth()]} ${hoje.getFullYear()}`;
+            // Se for upload de arquivo
+            if(imgSourceMode === 'file' && document.getElementById('imgProdutoFile').files[0]) {
+                const file = document.getElementById('imgProdutoFile').files[0];
+                finalImg = await toBase64(file);
+            }
 
-            const db = getDBFeed();
-            db.unshift({
-                id:     Date.now(),
-                titulo: document.getElementById('tituloPub').value.trim(),
-                tipo:   document.getElementById('tipoPub').value,
-                url:    document.getElementById('urlPub').value.trim(),
-                data:   dataFormatada,
-            });
-            saveDBFeed(db);
-            this.reset();
-            atualizarDicaTipo();
+            const dadosProd = {
+                id: idEdit ? parseInt(idEdit) : Date.now(),
+                nome: document.getElementById('nomeProduto').value,
+                cat: document.getElementById('categoriaProduto').value,
+                preco: document.getElementById('precoProduto').value,
+                img: finalImg
+            };
 
-            bootstrap.Modal.getInstance(document.getElementById('modalPublicacao')).hide();
-            renderizarFeed();
+            if(idEdit) {
+                const index = db.findIndex(p => p.id == idEdit);
+                db[index] = dadosProd;
+            } else {
+                db.push(dadosProd);
+            }
+
+            saveDBLoja(db);
+            cancelarEdicao();
+            renderizarLoja();
+            alert('Loja Atualizada!');
         });
 
-        /* ============================================================
-           SISTEMA DE LOGIN
-        ============================================================ */
-        function verificarLogin() {
-            const logado = sessionStorage.getItem('logado') === 'true';
-            document.getElementById('loginArea').style.display = logado ? 'none' : 'block';
-            document.getElementById('appArea').style.display   = logado ? 'block' : 'none';
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        // RENDERIZAÇÃO
+        function renderizarLoja() {
+            const db = getDBLoja();
+            const containerPub = document.getElementById('lojaContainer');
+            const containerAdm = document.getElementById('listaLojaAdmin');
+
+            containerPub.innerHTML = db.map(p => `
+                <div class="col-md-4 col-lg-3">
+                    <div class="card-produto">
+                        <span class="badge-categoria">${p.cat}</span>
+                        <img src="${p.img}" class="produto-img">
+                        <div class="produto-info">
+                            <h4 class="produto-titulo">${p.nome}</h4>
+                            <p class="produto-preco">R$ ${p.preco}</p>
+                            <a href="https://wa.me/${WHATSAPP_OFICIAL}" target="_blank" class="btn-comprar">Comprar</a>
+                        </div>
+                    </div>
+                </div>`).join('');
+
+            containerAdm.innerHTML = db.map(p => `
+                <div class="member-item-dark d-flex justify-content-between align-items-center">
+                    <div><strong>${p.nome}</strong><br><small>R$ ${p.preco}</small></div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-warning" onclick="prepararEdicao(${p.id})"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="excluirProd(${p.id})"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>`).join('');
         }
 
+        function excluirProd(id) { if(confirm('Apagar item?')) { saveDBLoja(getDBLoja().filter(p=>p.id!=id)); renderizarLoja(); } }
+
+        function filtrarLoja(cat) { renderizarLoja(); } // Simplificado para este exemplo
+
+        // LOGIN
+        function verificarLogin() { 
+6y            document.getElementById('loginArea').style.display = logado ? 'none' : 'block';
+            document.getElementById('appArea').style.display = logado ? 'block' : 'none';
+        }
         function tentarLogin() {
-            const senha = document.getElementById('senhaAcesso').value;
-            const erro  = document.getElementById('loginErro');
-            if (senha === SENHA_ADM) {
-                sessionStorage.setItem('logado', 'true');
-                erro.style.display = 'none';
-                document.getElementById('senhaAcesso').value = '';
-                verificarLogin();
-                renderizarFeed(); // Mostra botões de apagar
-            } else {
-                erro.style.display = 'block';
+            if(document.getElementById('senhaAcesso').value === SENHA_ADM) {
+                sessionStorage.setItem('logado', 'true'); verificarLogin(); renderizarLoja();
             }
         }
 
-        function fazerLogout() {
-            sessionStorage.removeItem('logado');
-            verificarLogin();
-            renderizarFeed();
-        }
-
-        /* ============================================================
-           INICIALIZAÇÃO
-        ============================================================ */
-        window.addEventListener('DOMContentLoaded', () => {
-            renderizarFeed();
-            atualizarDicaTipo();
-            verificarLogin();
-        });
+        window.onload = renderizarLoja;
     </script>
 </body>
 </html>
